@@ -1,0 +1,33 @@
+const http = require('http');
+const os = require('os');
+const path = require('path');
+const { EventEmitter } = require('events');
+
+const eventEmitter = new EventEmitter();
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello, World!\n');
+});
+
+const port = 8080;
+const hostname = '127.0.0.1';
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+console.log('OSType:', os.type());
+console.log('OSPlatform:', os.platform());
+console.log('OSArchitecture:', os.arch());
+console.log('CPUCores:', os.cpus().length);
+console.log('CurrentWorking Directory:', process.cwd());
+
+const joinedPath = path.join(__dirname, 'public', 'images');
+console.log('JoinedPath:', joinedPath);
+
+eventEmitter.on('customEvent', (data) => {
+  console.log('Custom Event Triggered:', data);
+});
+
+eventEmitter.emit('customEvent', { message: 'Hello from custom event!' });
